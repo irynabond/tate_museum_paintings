@@ -9,7 +9,7 @@ $(document).ready(function() {
 
   function loadImage(array) {
     var display = 10;
-    var start = 0;
+    var start = array.indexOf(array[0]);
     var end = (array.length - (array.length - display));
 
     for (var i = start; i < end; i++) {
@@ -26,7 +26,7 @@ $(document).ready(function() {
       }); // end get getJSON inside
     } // end for loop
 
-    array.splice(0, display);
+    array.splice(start, display);
     return array;
   } // end loadImage fn
 
