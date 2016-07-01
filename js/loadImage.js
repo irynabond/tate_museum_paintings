@@ -1,17 +1,26 @@
 var url='https://appsheettest1.azurewebsites.net/sample/art';
 var tateImageArray = [];
+var start = 0; // declaring start index
 
 $(document).ready(function() {
   $.getJSON(url, function(data) {
     $.each(data, function(id, value) {
       tateImageArray.push(url + '/' + value);
     }); // end each loop
+  loadImage(tateImageArray, start);
+}); // end get JSON outside
+    
 
-  function loadImage(array) {
-    var display = 10;
-    var start = array.indexOf(array[0]);
-    var end = (array.length - (array.length - display));
+  $('#loadMore').append('<button type="button">Load More</button> ').on('click', function() {
+    loadImage(tateImageArray, start);
+  });
 
+  function getNewIndex(index) {
+    start = index+1;
+  }
+
+  function loadImage(array, start) {
+    var end = start+2;
     for (var i = start; i < end; i++) {
       $.getJSON(array[i], function(obj) {
         imgData = '<div class="image clearfix">';
@@ -22,19 +31,12 @@ $(document).ready(function() {
         imgData += '<label>Year</label> ' + obj.year  + '</div>';
 
         $('#image').append(imgData);
-
-      }); // end get getJSON inside
+      }); 
+      start = i; // change index;
     } // end for loop
-
-    array.splice(start, display);
-    return array;
+    getNewIndex (start);
+   return start;
   } // end loadImage fn
-
-  loadImage(tateImageArray);
-
-  $('#loadMore').append('<button type="button">Load More</button> ').on('click', function() {
-    loadImage(tateImageArray);
-  });
-
-  }); // end get JSON outside
 }); // end document ready
+
+
