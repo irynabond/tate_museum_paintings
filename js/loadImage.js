@@ -1,5 +1,6 @@
 var url='https://appsheettest1.azurewebsites.net/sample/art';
 var tateImageArray = [];
+var start = 0; // declaring start index
 
 $(document).ready(function() {
   $.getJSON(url, function(data) {
@@ -7,9 +8,19 @@ $(document).ready(function() {
       tateImageArray.push(url + '/' + value);
     }); // end each loop
 
-  function loadImage(array) {
-    var display = 10;
-    var start = array.indexOf(array[0]);
+  loadImage(tateImageArray, start);
+
+  $('#loadMore').append('<button type="button">Load More</button> ').on('click', function() {
+    loadImage(tateImageArray, start);
+  });
+
+  }); // end get JSON outside
+}); // end document ready
+
+
+function loadImage(array, start) {
+    var display = 2;
+    //var start = array.indexOf(array[0]);
     var end = (array.length - (array.length - display));
 
     for (var i = start; i < end; i++) {
@@ -24,17 +35,9 @@ $(document).ready(function() {
         $('#image').append(imgData);
 
       }); // end get getJSON inside
+      start = i; // change index;
     } // end for loop
 
-    array.splice(start, display);
+    //array.splice(start, display);
     return array;
   } // end loadImage fn
-
-  loadImage(tateImageArray);
-
-  $('#loadMore').append('<button type="button">Load More</button> ').on('click', function() {
-    loadImage(tateImageArray);
-  });
-
-  }); // end get JSON outside
-}); // end document ready
